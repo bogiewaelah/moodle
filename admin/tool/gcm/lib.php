@@ -19,10 +19,8 @@ function tool_gcm_cron() {
     global $DB;
     
     mtrace('gcm: tool_gcm_cron() started at '. date('H:i:s'));
-    mtrace('Preparing push notification data ...');
+    mtrace('Nothing to do ...');
     
-    // finds any existing devices in Moodle database
-    $devices = $DB->get_records('tool_gcm_device', array(), 'timecreated');
 }
 
 function trim_string($string, $length = 50, $trimword = TRUE, $ellipsis = '...') {

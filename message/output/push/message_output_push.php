@@ -32,10 +32,7 @@ class message_output_push extends message_output {
 
         $result = TRUE;
         if ($this->is_system_configured()){
-            $userFrom = $eventdata->userfrom;
             $userIdTo = $eventdata->userto->id;
-            // $subject = $eventdata->subject;
-            $message = $eventdata->smallmessage;
 
             // skip any messaging suspended and deleted users
             if ($eventdata->userto->auth === 'nologin' or $eventdata->userto->suspended or $eventdata->userto->deleted) {
@@ -50,13 +47,14 @@ class message_output_push extends message_output {
             }
 
             // push the message to Google Cloud Messaging service
-            $messageTemplate = new stdClass();
-            $messageTemplate->fullname = fullname($userFrom);
-            $messageTemplate->message = $message;
             $url = 'https://android.googleapis.com/gcm/send';
             $params = array(
                 'registration_ids' => $regIds,
-                'data' => array('message' => get_string('notification_message', 'message_push', $messageTemplate))
+                'data' => array(
+                    'id' => $eventdata->savedmessageid,
+                    'subject' => $eventdata->subject,
+                    'message' => $eventdata->smallmessage
+                )
             );
 
             $headers = array(
@@ -69,7 +67,6 @@ class message_output_push extends message_output {
                 CURLOPT_URL => $url,
                 CURLOPT_POST => TRUE,
                 CURLOPT_HTTPHEADER => $headers,
-                // CURLOPT_RETURNTRANSFER => TRUE,
                 CURLOPT_SSL_VERIFYPEER => FALSE,
                 CURLOPT_POSTFIELDS => json_encode($params)
             ));

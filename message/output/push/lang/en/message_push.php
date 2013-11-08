@@ -11,6 +11,5 @@
  */
 
 $string['pluginname'] = 'Push Notification';
-$string['notification_message'] = 'Message from {$a->fullname}: {$a->message}';
 $string['gcm_server_key'] = 'GCM Server Key';
 $string['description_gcm_server_key'] = 'Google Cloud Messaging API\'s Server Key';
